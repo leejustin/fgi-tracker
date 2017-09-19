@@ -1,5 +1,6 @@
 var request = require('request');
 var cheerio = require('cheerio');
+var dateHelper = require('./DateHelper');
 
 var url = 'http://money.cnn.com/data/fear-and-greed/';
 
@@ -13,20 +14,20 @@ function parseFearAndGreed(input, parsedResults) {
   var objKey;
   var regex;
 
-  if (input.match("Now")) {
-    objKey = "now";
+  if (input.match('Now')) {
+    objKey = 'now';
     regex = regexNow;
-  } else if (input.match("Previous")) {
-    objKey = "prev";
+  } else if (input.match('Previous')) {
+    objKey = 'prev';
     regex = regexPrevious;
-  } else if (input.match("Week")) {
-    objKey = "week";
+  } else if (input.match('Week')) {
+    objKey = 'week';
     regex = regexWeek;
-  } else if (input.match("Month")) {
-    objKey = "month";
+  } else if (input.match('Month')) {
+    objKey = 'month';
     regex = regexMonth;
-  } else if (input.match("Year")) {
-    objKey = "year";
+  } else if (input.match('Year')) {
+    objKey = 'year';
     regex = regexYear;
   }
 
@@ -50,6 +51,7 @@ function parsedIsValid(parsedVal) {
 }
 
 request(url, function (error, response, html) {
+  return;
   if (!error && response.statusCode == 200) {
     var $ = cheerio.load(html);
 
@@ -70,3 +72,13 @@ Fear & Greed 1 Year Ago: 69 (Greed)
     */
   }
 });
+
+function processParsedResults(parsedResults) {
+  
+}
+
+function backfillData() {
+  var currentDateHelper = new dateHelper();
+
+
+}
