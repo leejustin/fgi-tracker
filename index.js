@@ -1,6 +1,7 @@
-var request = require('request');
 var cheerio = require('cheerio');
 var mongoose = require('mongoose');
+var request = require('request');
+var schedule = require('node-schedule');
 
 //TODO create config file
 mongoose.Promise = global.Promise
@@ -21,6 +22,11 @@ var regexWeek = new RegExp('Week Ago\\: \(\.\*\) \\(');
 var regexMonth = new RegExp('Month Ago\\: \(\.\*\) \\(');
 var regexYear = new RegExp('Year Ago\\: \(\.\*\) \\(');
 
+var cronEveryMinute = '*/1 * * * *';
+var cronMarketOpen = '0 10 * * 1-5';
+var cronMarketHalf = '0 13 * * 1-5';
+var cronMarketClose = '30 16 * * 1-5';
+
 function parseFearAndGreed(input, fgiRecord) {
 
   if (input.match('Now')) {
@@ -37,24 +43,42 @@ function parseFearAndGreed(input, fgiRecord) {
   }
 }
 
-request(url, function (error, response, html) {
+function scrapeData() {
 
-  if (!error && response.statusCode == 200) {
-    var $ = cheerio.load(html);
+  request(url, function (error, response, html) {
 
-    var FgiRecord = require('./models/fgiRecord');
-    var fgiRecord = new FgiRecord();
+    if (!error && response.statusCode == 200) {
+      var $ = cheerio.load(html);
 
-    $('#needleChart li').each(function(i, elem) {
-      var row = $(this).text();
-      var parsed = parseFearAndGreed(row, fgiRecord);
-    })
+      var FgiRecord = require('./models/fgiRecord');
+      var fgiRecord = new FgiRecord();
 
-    console.log('=================\nScrape results:\n' + fgiRecord);
-    fgiRecord.save(function(err) {
-        if (err) throw err;
+      $('#needleChart li').each(function(i, elem) {
+        var row = $(this).text();
+        var parsed = parseFearAndGreed(row, fgiRecord);
+      })
 
-        console.log('FGI Record saved successfully!');
-    });
-  }
+      console.log('Scrape results:\n' + fgiRecord);
+      fgiRecord.save(function(err) {
+          if (err) throw err;
+
+          console.log('FGI Record saved successfully!');
+      });
+    }
+  });
+}
+
+var jobOpen = schedule.scheduleJob(cronMarketOpen, function() {
+
+  console.log('=================\nMarket Open\n=================\n');
+});
+
+var jobHalf = schedule.scheduleJob(cronMarketHalf, function() {
+
+  console.log('=================\nMarket Half\n=================\n');
+});
+
+var jobClose = schedule.scheduleJob(cronMarketClose, function() {
+  
+  console.log('=================\nMarket Close\n=================\n');
 });

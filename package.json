@@ -19,6 +19,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "mongoose": "^4.11.12",
+    "node-schedule": "^1.2.5",
     "request": "^2.81.0"
   }
 }
