@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 var request = require('request');
 var schedule = require('node-schedule');
 
+var FgiRecord = require('./models/fgiRecord');
+
 //TODO create config file
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost:27017/fgi', { useMongoClient: true });
@@ -43,14 +45,13 @@ function parseFearAndGreed(input, fgiRecord) {
   }
 }
 
+/* Scrape and save data from remote */
 function scrapeData() {
 
   request(url, function (error, response, html) {
 
     if (!error && response.statusCode == 200) {
       var $ = cheerio.load(html);
-
-      var FgiRecord = require('./models/fgiRecord');
       var fgiRecord = new FgiRecord();
 
       $('#needleChart li').each(function(i, elem) {
@@ -59,26 +60,56 @@ function scrapeData() {
       })
 
       console.log('Scrape results:\n' + fgiRecord);
+
       fgiRecord.save(function(err) {
           if (err) throw err;
-
+          
+          //clearExistingDataFromToday(fgiRecord._id);
           console.log('FGI Record saved successfully!');
       });
     }
   });
 }
 
-var jobOpen = schedule.scheduleJob(cronMarketOpen, function() {
+/* Removes DB entries that were made today up to the end date */
+function clearExistingDataFromToday(endDate) {
 
+  var start = new Date();
+  start.setHours(0,0,0,0);
+  var end = new Date(endDate);
+
+  FgiRecord.find({
+    _id: {
+      $gte: start,
+      $lt: end
+    }
+  }, function(err, oldRecords) {
+    if (err) throw err;
+    
+    //Remove each record found in the range
+    for (i = 0; i < oldRecords.length; i++) {
+      var recordId = oldRecords[i]._id;
+
+      oldRecords[i].remove(function(err) {
+        if (err) throw err;
+
+        console.log('Removed _id: ' + recordId);
+      });
+    }
+  });
+}
+
+var jobOpen = schedule.scheduleJob(cronMarketOpen, function() {
   console.log('=================\nMarket Open\n=================\n');
+  scrapeData();
 });
 
 var jobHalf = schedule.scheduleJob(cronMarketHalf, function() {
-
   console.log('=================\nMarket Half\n=================\n');
+  scrapeData();
 });
 
 var jobClose = schedule.scheduleJob(cronMarketClose, function() {
-  
   console.log('=================\nMarket Close\n=================\n');
+  scrapeData();
 });
