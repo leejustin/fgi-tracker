@@ -1,13 +1,24 @@
-var cheerio = require('cheerio');
-var mongoose = require('mongoose');
-var request = require('request');
-var schedule = require('node-schedule');
+const cheerio = require('cheerio');
+const mongoose = require('mongoose');
+const nconf = require('nconf');
+const request = require('request');
+const schedule = require('node-schedule');
 
-var FgiRecord = require('./models/fgiRecord');
+const  FgiRecord = require('./models/fgiRecord');
 
-//TODO create config file
+nconf.argv().env().file('keys.json');
+const user = nconf.get('mongoUser');
+const pass = nconf.get('mongoPass');
+const host = nconf.get('mongoHost');
+const port = nconf.get('mongoPort');
+
+let uri = `mongodb://${user}:${pass}@${host}:${port}`;
+if (nconf.get('mongoDatabase')) {
+  uri = `${uri}/${nconf.get('mongoDatabase')}`;
+}
+
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost:27017/fgi', { useMongoClient: true });
+mongoose.connect(uri, { useMongoClient: true });
 
 var url = 'http://money.cnn.com/data/fear-and-greed/';
 //TODO turn this into a mock object
@@ -98,6 +109,8 @@ function clearExistingDataFromToday(endDate) {
     }
   });
 }
+
+scrapeData();
 
 var jobOpen = schedule.scheduleJob(cronMarketOpen, function() {
   console.log('=================\nMarket Open\n=================\n');

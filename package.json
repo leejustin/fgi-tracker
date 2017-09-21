@@ -2,13 +2,29 @@
   "name": "fgi-scraper",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leejustin/Fear-Greed-Index-Scraper.git"
+  },
+  "cloud-repo-tools": {
+    "test": {
+      "app": {
+        "requiredEnvVars": [
+          "mongoHost",
+          "mongoPort",
+          "mongoUser",
+          "mongoPassword"
+        ],
+        "msg": "IPs:\n::1;",
+        "args": [
+          "server.js"
+        ]
+      }
+    }
   },
   "author": "Justin Lee",
   "license": "MIT",
@@ -19,7 +35,11 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "mongoose": "^4.11.12",
+    "nconf": "^0.8.4",
     "node-schedule": "^1.2.5",
     "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "@google-cloud/nodejs-repo-tools": "^1.4.17"
   }
 }

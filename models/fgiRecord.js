@@ -4,10 +4,10 @@ var Schema = mongoose.Schema;
 var fgiRecordSchema = new Schema({
     _id:        { type: Date, index: true, default: Date.now },
     close:      { type: Number, min: 0, max: 100, required: true },
-    previous:   { type: Number, min: 0, max: 100 },
-    weekAgo:    { type: Number, min: 0, max: 100 },
-    monthAgo:   { type: Number, min: 0, max: 100 },
-    yearAgo:    { type: Number, min: 0, max: 100 },
+    prev:       { type: Number, min: 0, max: 100 },
+    week:       { type: Number, min: 0, max: 100 },
+    month:      { type: Number, min: 0, max: 100 },
+    year:       { type: Number, min: 0, max: 100 },
 });
 
 fgiRecordSchema.methods.setClose = function(input) {
@@ -15,19 +15,19 @@ fgiRecordSchema.methods.setClose = function(input) {
 };
 
 fgiRecordSchema.methods.setPrevious = function(input) {
-    this.previous = input;
+    this.prev = input;
 };
 
 fgiRecordSchema.methods.setWeekAgo = function(input) {
-    this.weekAgo = input;
+    this.week = input;
 };
 
 fgiRecordSchema.methods.setMonthAgo = function(input) {
-    this.monthAgo = input;
+    this.month = input;
 };
 
 fgiRecordSchema.methods.setYearAgo = function(input) {
-    this.yearAgo = input;
+    this.year = input;
 };
 
 var FgiRecord = mongoose.model('FgiRecord', fgiRecordSchema);
