@@ -6,6 +6,7 @@ const schedule = require('node-schedule');
 
 const  FgiRecord = require('./models/fgiRecord');
 
+//TODO create a constants file
 nconf.argv().env().file('keys.json');
 const user = nconf.get('mongoUser');
 const pass = nconf.get('mongoPass');
@@ -75,7 +76,7 @@ function scrapeData() {
       fgiRecord.save(function(err) {
           if (err) throw err;
           
-          //clearExistingDataFromToday(fgiRecord._id);
+          clearExistingDataFromToday(fgiRecord._id);
           console.log('FGI Record saved successfully!');
       });
     }
@@ -109,8 +110,6 @@ function clearExistingDataFromToday(endDate) {
     }
   });
 }
-
-scrapeData();
 
 var jobOpen = schedule.scheduleJob(cronMarketOpen, function() {
   console.log('=================\nMarket Open\n=================\n');
