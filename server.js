@@ -36,10 +36,11 @@ var regexWeek = new RegExp('Week Ago\\: \(\.\*\) \\(');
 var regexMonth = new RegExp('Month Ago\\: \(\.\*\) \\(');
 var regexYear = new RegExp('Year Ago\\: \(\.\*\) \\(');
 
+//Set to market times in UTC
 var cronEveryMinute = '*/1 * * * *';
-var cronMarketOpen = '0 10 * * 1-5';
-var cronMarketHalf = '0 13 * * 1-5';
-var cronMarketClose = '30 16 * * 1-5';
+var cronMarketOpen = '0 14 * * 1-5';
+var cronMarketHalf = '0 17 * * 1-5';
+var cronMarketClose = '30 20 * * 1-5';
 
 function parseFearAndGreed(input, fgiRecord) {
 
