@@ -1,7 +1,5 @@
 env: flex
 runtime: nodejs
-runtime: nodejs
-env: flexible
 threadsafe: true
 automatic_scaling:
   min_num_instances: 1
