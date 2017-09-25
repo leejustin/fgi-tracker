@@ -7,7 +7,7 @@ module.exports = function() {
 
     let scraper = new fgiScraper();
     console.log("well hello");
-    scraper.run(); //remove
+    //scraper.run(); //remove
 
     var jobOpen = schedule.scheduleJob(constants.cron.marketOpen, function () {
         scraper.run();
