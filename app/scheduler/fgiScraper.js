@@ -5,22 +5,17 @@ module.exports = function() {
   var nconf = require('nconf');
   var request = require('request');
 
-  var varants = require('../helper/constants');
+  var constants = require('../helper/constants');
   var FgiRecord = require('../model/fgiRecord');
-
-  //TODO create a constants file
-  nconf.argv().env().file('./config/keys.json');
-  var user = nconf.get('mongoUser');
-  var pass = nconf.get('mongoPass');
-  var host = nconf.get('mongoHost');
-  var port = nconf.get('mongoPort');
 
   let url = constants.fgiUrl;
 
   //let uri = `mongodb://${user}:${pass}@${host}:${port}`;
-  let uri = `mongodb://${host}:${port}`;
-  if (nconf.get('mongoDatabase')) {
-    uri = `${uri}/${nconf.get('mongoDatabase')}`;
+  //let uri = `mongodb://${host}:${port}`;
+  let uri = `mongodb://${constants.db.automation.host}:${constants.db.automation.port}`;
+
+  if (constants.db.automation.db) {
+    uri = `${uri}/${constants.db.automation.db}`;
   }
 
   mongoose.Promise = global.Promise

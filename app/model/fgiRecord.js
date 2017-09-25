@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var fgiRecordSchema = new Schema({
     _id:        { type: Date, index: true, default: Date.now },
