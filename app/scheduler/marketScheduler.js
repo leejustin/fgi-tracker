@@ -9,7 +9,8 @@ module.exports = function() {
     let cronMarketClose = '30 20 * * 1-5';
 
     const scraper = new fgiScraper();
-    //scraper.run(); //remove
+    console.log("well hello");
+    scraper.run(); //remove
 
     var jobOpen = schedule.scheduleJob(cronMarketOpen, function () {
         scraper.run();

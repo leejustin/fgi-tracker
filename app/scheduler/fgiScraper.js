@@ -1,11 +1,11 @@
 module.exports = function() {
 
   const cheerio = require('cheerio');
-  const globalConstants = require('../helper/globalConstants');
   const mongoose = require('mongoose');
   const nconf = require('nconf');
   const request = require('request');
 
+  const constants = require('../helper/constants');
   const FgiRecord = require('../model/fgiRecord');
 
   //TODO create a constants file
@@ -15,9 +15,7 @@ module.exports = function() {
   const host = nconf.get('mongoHost');
   const port = nconf.get('mongoPort');
 
-  //TODO do better way of getting const values
-  const constants = new globalConstants();
-  let url = constants.fgiUrl();
+  let url = constants.fgiUrl;
 
   //let uri = `mongodb://${user}:${pass}@${host}:${port}`;
   let uri = `mongodb://${host}:${port}`;
@@ -38,21 +36,21 @@ module.exports = function() {
   function parseFearAndGreed(input, fgiRecord) {
 
     if (input.match('Now')) {
-      objKey = 'now';
-      fgiRecord.setCurrent(input.match(regexNow).pop());
+      fgiRecord.set('now', input.match(regexNow).pop());
     } else if (input.match('Previous')) {
-      fgiRecord.setPrevious(input.match(regexPrevious).pop());
+      fgiRecord.set('prev', input.match(regexPrevious).pop());
     } else if (input.match('Week')) {
-      fgiRecord.setWeekAgo(input.match(regexWeek).pop());
+      fgiRecord.set('week', input.match(regexWeek).pop());
     } else if (input.match('Month')) {
-      fgiRecord.setMonthAgo(input.match(regexMonth).pop());
+      fgiRecord.set('month', input.match(regexMonth).pop());
     } else if (input.match('Year')) {
-      fgiRecord.setYearAgo(input.match(regexYear).pop());
+      fgiRecord.set('year', input.match(regexYear).pop());
     }
   }
 
   /* Scrape and save data from remote */
   this.run = function() {
+    console.log('running scraper');
 
     request(url, function (error, response, html) {
 
@@ -64,13 +62,18 @@ module.exports = function() {
           var row = $(this).text();
           var parsed = parseFearAndGreed(row, fgiRecord);
         })
-
+        
         fgiRecord.save(function(err) {
             if (err) throw err;
+
+            console.log(fgiRecord);
             
             clearExistingDataFromToday(fgiRecord._id);
             console.log('FGI Record saved successfully!');
         });
+      }
+      else {
+        console.log( 'o no');
       }
     });
   }
