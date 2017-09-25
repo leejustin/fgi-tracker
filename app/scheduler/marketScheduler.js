@@ -1,14 +1,14 @@
 module.exports = function() {
 
-    const schedule = require('node-schedule');
-    const fgiScraper = require('./fgiScraper');
+    var schedule = require('node-schedule');
+    var fgiScraper = require('./fgiScraper');
     
     let cronEveryMinute = '*/1 * * * *';
     let cronMarketOpen = '0 14 * * 1-5';
     let cronMarketHalf = '0 17 * * 1-5';
     let cronMarketClose = '30 20 * * 1-5';
 
-    const scraper = new fgiScraper();
+    var scraper = new fgiScraper();
     console.log("well hello");
     scraper.run(); //remove
 

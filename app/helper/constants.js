@@ -3,4 +3,3 @@ let constants = {
 }
 
 module.exports = Object.freeze(constants);
-

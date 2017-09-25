@@ -1,19 +1,19 @@
 module.exports = function() {
 
-  const cheerio = require('cheerio');
-  const mongoose = require('mongoose');
-  const nconf = require('nconf');
-  const request = require('request');
+  var cheerio = require('cheerio');
+  var mongoose = require('mongoose');
+  var nconf = require('nconf');
+  var request = require('request');
 
-  const constants = require('../helper/constants');
-  const FgiRecord = require('../model/fgiRecord');
+  var varants = require('../helper/constants');
+  var FgiRecord = require('../model/fgiRecord');
 
   //TODO create a constants file
   nconf.argv().env().file('./config/keys.json');
-  const user = nconf.get('mongoUser');
-  const pass = nconf.get('mongoPass');
-  const host = nconf.get('mongoHost');
-  const port = nconf.get('mongoPort');
+  var user = nconf.get('mongoUser');
+  var pass = nconf.get('mongoPass');
+  var host = nconf.get('mongoHost');
+  var port = nconf.get('mongoPort');
 
   let url = constants.fgiUrl;
 

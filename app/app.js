@@ -1,7 +1,6 @@
 module.exports = function () {
     var restify = require('restify');
 
-    // Server
     var server = restify.createServer({
         name: 'fgiTracker',
         version: '1.0.0'
