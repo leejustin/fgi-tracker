@@ -61,14 +61,9 @@ module.exports = function() {
         fgiRecord.save(function(err) {
             if (err) throw err;
 
-            console.log(fgiRecord);
-            
             clearExistingDataFromToday(fgiRecord._id);
             console.log('FGI Record saved successfully!');
         });
-      }
-      else {
-        console.log( 'o no');
       }
     });
   }
