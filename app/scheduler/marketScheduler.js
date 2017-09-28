@@ -10,14 +10,20 @@ module.exports = function() {
     //scraper.run(); //remove
 
     var jobOpen = schedule.scheduleJob(constants.cron.marketOpen, function () {
-        scraper.run();
+        setTimeout(function () {
+            scraper.run();
+        }, Math.floor(Math.random() * 60) * 1000);
     });
 
     var jobHalf = schedule.scheduleJob(constants.cron.marketHalf, function () {
-        scraper.run();
+        setTimeout(function () {
+            scraper.run();
+        }, Math.floor(Math.random() * 60) * 1000);
     });
 
     var jobClose = schedule.scheduleJob(constants.cron.marketClose, function () {
-        scraper.run();
+        setTimeout(function () {
+            scraper.run();
+        }, Math.floor(Math.random() * 60) * 1000);
     });
 };
