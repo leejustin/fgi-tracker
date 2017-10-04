@@ -10,9 +10,7 @@ module.exports = function() {
 
   let url = constants.fgiUrl;
 
-  //let uri = `mongodb://${user}:${pass}@${host}:${port}`;
-  //let uri = `mongodb://${host}:${port}`;
-  let uri = `mongodb://${constants.db.automation.host}:${constants.db.automation.port}`;
+  let uri = `mongodb://${constants.db.automation.user}:${constants.db.automation.pass}@${constants.db.automation.host}:${constants.db.automation.port}`;
 
   if (constants.db.automation.db) {
     uri = `${uri}/${constants.db.automation.db}`;

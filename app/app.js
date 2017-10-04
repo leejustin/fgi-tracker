@@ -7,7 +7,7 @@ module.exports = function () {
     var FgiRecordDto = require('./dto/fgiRecordDto');
 
     //TODO: Clean up mongoose connection
-    let uri = `mongodb://${constants.db.automation.host}:${constants.db.automation.port}`;
+    let uri = `mongodb://${constants.db.automation.user}:${constants.db.automation.pass}@${constants.db.automation.host}:${constants.db.automation.port}`;
 
     if (constants.db.automation.db) {
         uri = `${uri}/${constants.db.automation.db}`;
