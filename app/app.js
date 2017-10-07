@@ -2,6 +2,7 @@ module.exports = function () {
     var mongoose = require('mongoose');
     var restify = require('restify');
 
+    var ApiExceptionDto = require('./dto/apiExceptionDto');
     var constants = require('./helper/constants');
     var DateHelper = require('./helper/dateHelper');
     var FgiRecord = require('./model/fgiRecord');
@@ -42,7 +43,8 @@ module.exports = function () {
         try {
             dateRange = dateHelper.getRange(req.params.id);
         } catch(e) {
-            res.write(e);
+            res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' })
+            res.write(JSON.stringify(new ApiExceptionDto(e)));
             res.end();
             return next();
         }
@@ -53,12 +55,16 @@ module.exports = function () {
                 $lte: dateRange.end
             }
         }, function (err, records) {
+            if (err) {
+                console.error(err);
+                res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });            
+                res.write(JSON.stringify(new ApiExceptionDto("We encountered an internal error.")));
+                res.end();
+            }
+
             var dateVal = null;
             var closeVal = null;
-
-            //TODO: error DTO
-            if (err) throw err;
-
+            
             if (records.length > 0) {
                 latestIndex = records.length - 1;
                 var dateVal = records[latestIndex]._id;
@@ -68,9 +74,9 @@ module.exports = function () {
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
             res.write(JSON.stringify(new FgiRecordDto(dateVal, closeVal)));
             res.end();
+
             return next();
         });
-
     });
 
     server.get(baseUrl + '/records/', function (req, res, next) {
@@ -78,7 +84,8 @@ module.exports = function () {
         try {
             dateRange = dateHelper.getRange(req.query.start, req.query.end);
         } catch(e) {
-            res.write(e);
+            res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' })
+            res.write(JSON.stringify(new ApiExceptionDto(e)));
             res.end();
             return next();
         }
@@ -89,8 +96,13 @@ module.exports = function () {
                 $lte: dateRange.end
             }
         }, function (err, records) {
-            if (err) throw err;
-            console.log(records);
+            if (err) {
+                console.error(err);
+                res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });            
+                res.write(JSON.stringify(new ApiExceptionDto("We encountered an internal error.")));
+                res.end();
+            }
+            //console.log(records);
             var resVal = [];
 
             records.forEach(function(record) {

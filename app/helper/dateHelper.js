@@ -12,12 +12,10 @@ module.exports = function() {
         var endDate = new Date(end);
 
         if (isNaN(startDate.valueOf()) || isNaN(endDate.valueOf())) {
-            //TODO: create and return errorDto
-            throw 'error';
+            throw 'Invalid date format.';
         }
         if (startDate > endDate) {
-            //TODO: create and return errorDto
-            throw 'invalid range';
+            throw 'The start date must be less than or equal to the end date.';
         }
         
         startDate.setUTCHours(0);

@@ -1,4 +1,5 @@
 class FgiRecordDto {
+    
     constructor(date, value) {
         if (date != null) {
             var dateString = date.toISOString();
