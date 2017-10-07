@@ -3,8 +3,11 @@ module.exports = function () {
     var restify = require('restify');
 
     var constants = require('./helper/constants');
+    var DateHelper = require('./helper/dateHelper');
     var FgiRecord = require('./model/fgiRecord');
     var FgiRecordDto = require('./dto/fgiRecordDto');
+
+    let dateHelper = new DateHelper();
 
     //TODO: Clean up mongoose connection
     let uri = `mongodb://${constants.db.automation.user}:${constants.db.automation.pass}@${constants.db.automation.host}:${constants.db.automation.port}`;
@@ -27,29 +30,27 @@ module.exports = function () {
     server.use(restify.plugins.queryParser());
     server.use(restify.plugins.bodyParser());
 
-    server.get(baseUrl + '/records/:id', function (req, res, next) {
-        var start = new Date(req.params.id);
+    server.get(baseUrl + '/test/', function (req, res, next) {
+        res.write("TESTING!");
+        res.end();
+        console.log("i ran a test");
+        return next();
+    });
 
-        var end = new Date();
-        if (isNaN(start.valueOf())) {
-            //TODO: create and return errorDto
-            res.write("error")
+    server.get(baseUrl + '/records/:id', function (req, res, next) {
+        var dateRange;
+        try {
+            dateRange = dateHelper.getRange(req.params.id);
+        } catch(e) {
+            res.write(e);
             res.end();
             return next();
         }
 
-        //TODO: clean up into helper
-        start.setUTCHours(0);
-        start.setMinutes(0);
-
-        end.setDate(start.getDate() + 1);
-        end.setUTCHours(0);
-        end.setMinutes(0);
-
         FgiRecord.find({
             _id: {
-                $gte: start,
-                $lt: end
+                $gte: dateRange.start,
+                $lte: dateRange.end
             }
         }, function (err, records) {
             var dateVal = null;
@@ -73,36 +74,28 @@ module.exports = function () {
     });
 
     server.get(baseUrl + '/records/', function (req, res, next) {
-
-        var start = new Date(req.query.start);
-        var end = new Date(req.query.end);
-
-        if (isNaN(start.valueOf()) || isNaN(end.valueOf())) {
-            //TODO: create and return errorDto
-            res.write("error")
+        var dateRange;
+        try {
+            dateRange = dateHelper.getRange(req.query.start, req.query.end);
+        } catch(e) {
+            res.write(e);
             res.end();
-            return next();            
+            return next();
         }
-
-        //Clean up dates
-        start.setUTCHours = 0;
-        start.setMinutes = 0;
-        end.setUTCHours = 0;
-        end.setUTCMinutes = 0;
 
         FgiRecord.find({
             _id: {
-                $gte: start,
-                $lt: end
+                $gte: dateRange.start,
+                $lte: dateRange.end
             }
         }, function (err, records) {
             if (err) throw err;
             console.log(records);
             var resVal = [];
 
-            for (record in records) {
+            records.forEach(function(record) {
                 resVal.push(new FgiRecordDto(record._id, record.now));
-            }
+            });
             
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });            
             res.write(JSON.stringify(resVal));

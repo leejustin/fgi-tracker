@@ -6,7 +6,6 @@ module.exports = function() {
     var fgiScraper = require('./fgiScraper');
 
     let scraper = new fgiScraper();
-    //scraper.run(); //remove
 
     var jobOpen = schedule.scheduleJob(constants.cron.marketOpen, function () {
         setTimeout(function () {
