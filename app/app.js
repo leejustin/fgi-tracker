@@ -3,25 +3,14 @@ module.exports = function () {
     var restify = require('restify');
 
     var ApiExceptionDto = require('./dto/apiExceptionDto');
-    var constants = require('./helper/constants');
     var DateHelper = require('./helper/dateHelper');
     var FgiRecord = require('./model/fgiRecord');
     var FgiRecordDto = require('./dto/fgiRecordDto');
 
     let dateHelper = new DateHelper();
 
-    //TODO: Clean up mongoose connection
-    let uri = `mongodb://${constants.db.automation.user}:${constants.db.automation.pass}@${constants.db.automation.host}:${constants.db.automation.port}`;
-
-    if (constants.db.automation.db) {
-        uri = `${uri}/${constants.db.automation.db}`;
-    }
-
-    mongoose.Promise = global.Promise
-    mongoose.connect(uri, { useMongoClient: true });
-
     var server = restify.createServer({
-        name: 'fgiTracker',
+        name: 'fgi-tracker',
         version: '1.0.0'
     });
 
@@ -30,13 +19,6 @@ module.exports = function () {
     server.use(restify.plugins.acceptParser(server.acceptable));
     server.use(restify.plugins.queryParser());
     server.use(restify.plugins.bodyParser());
-
-    server.get(baseUrl + '/test/', function (req, res, next) {
-        res.write("TESTING!");
-        res.end();
-        console.log("i ran a test");
-        return next();
-    });
 
     server.get(baseUrl + '/records/:id', function (req, res, next) {
         var dateRange;
@@ -64,7 +46,7 @@ module.exports = function () {
 
             var dateVal = null;
             var closeVal = null;
-            
+
             if (records.length > 0) {
                 latestIndex = records.length - 1;
                 var dateVal = records[latestIndex]._id;
@@ -116,6 +98,21 @@ module.exports = function () {
             return next();
         });
     });
+
+    server.post(baseUrl + '/schedulers/', function (req, res, next) {
+
+        if (req.header('X-Appengine-Cron') != 'true') {
+            console.warn("Forbidden request was made:\n" + req);
+            res.writeHeader(403);
+            res.end();
+            return next();
+        }
+    
+        console.log("Scraper was run!!!!!");
+        res.writeHeader(200);
+        res.end();
+        return next();
+    });   
 
     server.listen(8080, function () {
         console.log('%s listening at %s', server.name, server.url);
