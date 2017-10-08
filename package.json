@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leejustin/Fear-Greed-Index-Scraper.git"
+    "url": "git+https://github.com/leejustin/FGI-Tracker.git"
   },
   "cloud-repo-tools": {
     "test": {
@@ -29,9 +29,9 @@
   "author": "Justin Lee",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/leejustin/Fear-Greed-Index-Scraper/issues"
+    "url": "https://github.com/leejustin/FGI-Tracker/issues"
   },
-  "homepage": "https://github.com/leejustin/Fear-Greed-Index-Scraper#readme",
+  "homepage": "https://github.com/leejustin/FGI-Tracker#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "mongoose": "^4.11.12",
