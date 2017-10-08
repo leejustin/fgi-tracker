@@ -1,7 +1,5 @@
 module.exports = function() {
 
-    var schedule = require('node-schedule');
-
     var constants = require('../helper/constants');
     var DateHelper = require('../helper/dateHelper');
     var fgiScraper = require('./fgiScraper');

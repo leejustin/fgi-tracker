@@ -13,5 +13,5 @@ cron:
   timezone: America/New_York
 - description: test for cron functionality
   url: /api/fgi/test
-  schedule: every 1 hour
+  schedule: every 1 hours
   timezone: America/New_York
