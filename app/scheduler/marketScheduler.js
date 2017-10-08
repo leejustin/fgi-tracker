@@ -7,8 +7,8 @@ module.exports = function() {
     let dateHelper = new DateHelper();
     let scraper = new fgiScraper();
 
-    var runScheduler = function() {
-        console.log("run scheduler)");
+    this.runScheduler = function() {
+        console.log("run scheduler");
         if (!dateHelper.isWeekend()) {
             setTimeout(function () {
                 scraper.run();
