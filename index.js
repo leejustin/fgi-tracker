@@ -8,8 +8,5 @@ if (constants.db.automation.db) {
 mongoose.Promise = global.Promise
 mongoose.connect(uri, { useMongoClient: true });
 
-var scheduler = require('./app/scheduler/marketScheduler');
-scheduler();
-
 var api = require('./app/app')
 api();

@@ -3,25 +3,18 @@ module.exports = function() {
     var schedule = require('node-schedule');
 
     var constants = require('../helper/constants');
+    var DateHelper = require('../helper/dateHelper');
     var fgiScraper = require('./fgiScraper');
 
+    let dateHelper = new DateHelper();
     let scraper = new fgiScraper();
 
-    var jobOpen = schedule.scheduleJob(constants.cron.marketOpen, function () {
-        setTimeout(function () {
-            scraper.run();
-        }, Math.floor(Math.random() * 60) * 1000);
-    });
-
-    var jobHalf = schedule.scheduleJob(constants.cron.marketHalf, function () {
-        setTimeout(function () {
-            scraper.run();
-        }, Math.floor(Math.random() * 60) * 1000);
-    });
-
-    var jobClose = schedule.scheduleJob(constants.cron.marketClose, function () {
-        setTimeout(function () {
-            scraper.run();
-        }, Math.floor(Math.random() * 60) * 1000);
-    });
+    var runScheduler = function() {
+        console.log("run scheduler)");
+        if (!dateHelper.isWeekend()) {
+            setTimeout(function () {
+                scraper.run();
+            }, Math.floor(Math.random() * 60) * 1000);
+        }
+    };
 };

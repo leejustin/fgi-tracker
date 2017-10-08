@@ -26,4 +26,12 @@ module.exports = function() {
 
         return new DateRange(startDate, endDate);
     }
+
+    this.isWeekend = function() {
+        var dayOfWeek = new Date().getDay();
+        if (dayOfWeek == 6 || dayOfWeek == 0) {
+            return true;
+        }
+        return false;
+    }
 };

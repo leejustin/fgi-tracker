@@ -6,8 +6,10 @@ module.exports = function () {
     var DateHelper = require('./helper/dateHelper');
     var FgiRecord = require('./model/fgiRecord');
     var FgiRecordDto = require('./dto/fgiRecordDto');
-
+    var Scheduler = require('./scheduler/marketScheduler');
+    
     let dateHelper = new DateHelper();
+    let scheduler = new Scheduler();
 
     var server = restify.createServer({
         name: 'fgi-tracker',
@@ -19,6 +21,12 @@ module.exports = function () {
     server.use(restify.plugins.acceptParser(server.acceptable));
     server.use(restify.plugins.queryParser());
     server.use(restify.plugins.bodyParser());
+
+    server.get(baseUrl + '/test', function (req, res, next) {
+        res.end();
+        console.log("CRONTEST WAS SUCCESSFUL");
+        return next();
+    });
 
     server.get(baseUrl + '/records/:id', function (req, res, next) {
         var dateRange;
@@ -99,7 +107,7 @@ module.exports = function () {
         });
     });
 
-    server.post(baseUrl + '/schedulers/', function (req, res, next) {
+    server.get(baseUrl + '/schedulers/', function (req, res, next) {
 
         if (req.header('X-Appengine-Cron') != 'true') {
             console.warn("Forbidden request was made:\n" + req);
@@ -108,7 +116,8 @@ module.exports = function () {
             return next();
         }
     
-        console.log("Scraper was run!!!!!");
+        scheduler.runScheduler();
+        
         res.writeHeader(200);
         res.end();
         return next();
