@@ -1,0 +1,13 @@
+cron:
+- description: collect data when market opens
+  url: /api/fgi/schedulers
+  schedule: every day 10:00
+  timezone: America/New_York
+- description: collect data when market is halfway open
+  url: /api/fgi/schedulers
+  schedule: every day 13:00
+  timezone: America/New_York
+- description: collect data when market is closed
+  url: /api/fgi/schedulers
+  schedule: every day 16:30
+  timezone: America/New_York

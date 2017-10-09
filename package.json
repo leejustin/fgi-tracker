@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node server.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leejustin/Fear-Greed-Index-Scraper.git"
+    "url": "git+https://github.com/leejustin/FGI-Tracker.git"
   },
   "cloud-repo-tools": {
     "test": {
@@ -21,7 +21,7 @@
         ],
         "msg": "IPs:\n::1;",
         "args": [
-          "server.js"
+          "index.js"
         ]
       }
     }
@@ -29,15 +29,16 @@
   "author": "Justin Lee",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/leejustin/Fear-Greed-Index-Scraper/issues"
+    "url": "https://github.com/leejustin/FGI-Tracker/issues"
   },
-  "homepage": "https://github.com/leejustin/Fear-Greed-Index-Scraper#readme",
+  "homepage": "https://github.com/leejustin/FGI-Tracker#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "mongoose": "^4.11.12",
     "nconf": "^0.8.4",
-    "node-schedule": "^1.2.5",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "restify": "^6.0.1",
+    "restify-plugins": "^1.6.0"
   },
   "devDependencies": {
     "@google-cloud/nodejs-repo-tools": "^1.4.17"

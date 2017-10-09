@@ -58,4 +58,4 @@ typings/
 .env
 
 # gcloud keys
-keys.json
+keys*.json
