@@ -13,7 +13,7 @@ module.exports = function () {
 
     var server = restify.createServer({
         name: 'fgi-tracker',
-        version: '1.0.0'
+        version: '0.9.0'
     });
 
     let baseUrl = '/api/fgi/';
@@ -21,12 +21,7 @@ module.exports = function () {
     server.use(restify.plugins.acceptParser(server.acceptable));
     server.use(restify.plugins.queryParser());
     server.use(restify.plugins.bodyParser());
-
-    server.get(baseUrl + '/test', function (req, res, next) {
-        res.end();
-        console.log("CRONTEST WAS SUCCESSFUL");
-        return next();
-    });
+    server.use(restify.plugins.throttle({burst:10,rate:3,ip:true}));
 
     server.get(baseUrl + '/records/:id', function (req, res, next) {
         var dateRange;
