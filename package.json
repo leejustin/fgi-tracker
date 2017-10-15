@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/leejustin/FGI-Tracker#readme",
   "dependencies": {
+    "@google-cloud/datastore": "^1.1.0",
     "cheerio": "^1.0.0-rc.2",
     "mongoose": "^4.11.12",
     "nconf": "^0.8.4",
