@@ -11,3 +11,7 @@ cron:
   url: /api/fgi/schedulers
   schedule: every day 16:30
   timezone: America/New_York
+- description: sync last day's data to gcloud
+  url: /api/fgi/schedulers/backup
+  schedule: every day 16:45
+  timezone: America/New_York
