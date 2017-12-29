@@ -25,5 +25,10 @@ mkdir ~/fgi-tracker/config/
 gsutil cp gs://indextracker-179600.appspot.com/config/keys.json ~/fgi-tracker/config/
 # Run application
 cd fgi-tracker/
-npm install
+npm install --save
+
+# Temporary band-aid fix for directory
+mkdir ~/fgi-tracker/node_modules/grpc/src/node
+npm install --save
+
 pm2 start index.js
