@@ -3,15 +3,11 @@ module.exports = function () {
     var restify = require('restify');
 
     var ApiExceptionDto = require('./dto/apiExceptionDto');
-    var GCloudDatastore = require('./scheduler/backup');
     var DateHelper = require('./helper/dateHelper');
     var FgiRecord = require('./model/fgiRecord');
     var FgiRecordDto = require('./dto/fgiRecordDto');
-    var Scheduler = require('./scheduler/marketScheduler');
     
-    let backup = new GCloudDatastore();
     let dateHelper = new DateHelper();
-    let scheduler = new Scheduler();
 
     var server = restify.createServer({
         name: 'fgi-tracker',
@@ -103,38 +99,6 @@ module.exports = function () {
             return next();
         });
     });
-
-    server.get(baseUrl + '/schedulers/', function (req, res, next) {
-
-        if (req.header('X-Appengine-Cron') != 'true') {
-            console.warn("Forbidden request was made:\n" + req);
-            res.writeHeader(403);
-            res.end();
-            return next();
-        }
-    
-        scheduler.runScheduler();
-        
-        res.writeHeader(200);
-        res.end();
-        return next();
-    });
-
-    server.get(baseUrl + '/schedulers/backup', function (req, res, next) {
-
-        if (req.header('X-Appengine-Cron') != 'true') {
-            console.warn("Forbidden request was made:\n" + req);
-            res.writeHeader(403);
-            res.end();
-            return next();
-        }
-
-        backup.saveMostRecent();
-
-        res.writeHeader(200);
-        res.end();
-        return next();
-    })
 
     server.listen(8080, function () {
         console.log('%s listening at %s', server.name, server.url);
