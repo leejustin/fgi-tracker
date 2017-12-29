@@ -33,15 +33,13 @@
   },
   "homepage": "https://github.com/leejustin/FGI-Tracker#readme",
   "dependencies": {
-    "@google-cloud/datastore": "^1.1.0",
+    "@google-cloud/datastore": "^1.3.3",
     "cheerio": "^1.0.0-rc.2",
-    "mongoose": "^4.11.12",
-    "nconf": "^0.8.4",
-    "request": "^2.81.0",
-    "restify": "^6.0.1",
+    "mongoose": "^4.13.8",
+    "nconf": "^0.8.5",
+    "node-schedule": "^1.2.5",
+    "request": "^2.83.0",
+    "restify": "^6.3.4",
     "restify-plugins": "^1.6.0"
-  },
-  "devDependencies": {
-    "@google-cloud/nodejs-repo-tools": "^1.4.17"
   }
 }
