@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# Followed the following tutorial:
+# https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-debian-8
+
 echo "Running build script..."
 sudo apt-get update -y
 # Install NodeJS
