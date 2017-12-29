@@ -14,6 +14,8 @@ mongoose.connect(uri, { useMongoClient: true });
 let backup = new GCloudDatastore();
 let scheduler = new Scheduler();
 
+console.log("Application starting...");
+
 var jobOpen = schedule.scheduleJob("0 0 14 * * 1-5", function () {
     setTimeout(function () {
         console.log("Scheduler open run at " + (new Date()));
