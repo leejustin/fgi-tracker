@@ -26,6 +26,7 @@ gsutil cp gs://indextracker-179600.appspot.com/config/keys.json ~/fgi-tracker/co
 # Run application
 cd fgi-tracker/
 npm install --save
+npm install mongoose --save
 
 # Temporary band-aid fix for directory
 mkdir ~/fgi-tracker/node_modules/grpc/src/node
